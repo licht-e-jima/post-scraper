@@ -129,6 +129,7 @@ if __name__ == "__main__":
     import uvicorn
 
     port = os.getenv("PORT")
+    host = os.getenv("HOST") or "0.0.0.0"
     assert port is not None
 
-    uvicorn.run(app=app, host="0.0.0.0", port=int(port))
+    uvicorn.run(app=app, host=host, port=int(port))

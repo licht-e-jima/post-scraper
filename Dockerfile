@@ -11,5 +11,4 @@ RUN apk add --no-cache build-base libxml2-dev libxslt-dev\
     && pip install --no-cache-dir --trusted-host pypi.python.org -r requirements.txt \
     && apk del build-base
 COPY scraper .
-EXPOSE 8000
 CMD python main.py
