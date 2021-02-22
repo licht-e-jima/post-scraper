@@ -6,7 +6,6 @@ from instascrape.exceptions.exceptions import InstagramLoginRedirectError, Wrong
 from fastapi import FastAPI, HTTPException
 import numpy as np
 
-app = FastAPI()
 
 import functools
 
@@ -24,8 +23,14 @@ def handle_requests(func):
     return wrapper
 
 
-@handle_requests
+app = FastAPI()
+
+@app.get("/")
+def root():
+    return "Hello World!"
+
 @app.get("/facebook_posts")  # TODO: response model を定義する
+@handle_requests
 def facebook_posts(account: str, pages: int = 2) -> list[dict]:
     """facebook の投稿を取得する
 
@@ -66,8 +71,8 @@ def facebook_posts(account: str, pages: int = 2) -> list[dict]:
         posts.append(post)
     return posts
 
-@handle_requests
 @app.get("/instagram_posts")  # TODO: response model を定義する
+@handle_requests
 def instagram_posts(account: str, amt: int = 12) -> list[dict]:
     """instagram の投稿を取得する
 
@@ -119,3 +124,11 @@ def instagram_posts(account: str, amt: int = 12) -> list[dict]:
         posts.append(post)
     return posts
 
+if __name__ == "__main__":
+    import os
+    import uvicorn
+
+    port = os.getenv("PORT")
+    assert port is not None
+
+    uvicorn.run(app=app, host="0.0.0.0", port=int(port))
